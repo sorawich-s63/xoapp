@@ -9,7 +9,7 @@ class Game extends React.Component {
         super(props);
         this.onChangenum = this.onChangenum.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        
+      
         this.state = {
             numforxo : '',
             number : 3,
@@ -19,36 +19,33 @@ class Game extends React.Component {
             xIsNext: true
         };
     }
-    componentDidMount() {
-        this.reboy()
-    }
+  
     onChangenum(e) {
+        e.preventDefault()
         this.setState({
-            numforxo: e.target.value
+            numforxo: parseInt(e.target.value)
+           
         });
     }
 
-    reboy(){
-        this.setState ({
-            rerere: this.state.rerere ? false : true
-        })
-    }
-    onSubmit() {
+
+    onSubmit(event) {
+        event.preventDefault()
         this.setState({
             number: parseInt(this.state.numforxo),
-            history: [{ squares: Array(this.state.number**2).fill(null) }],
+            history: [{ squares: Array(this.state.numforxo**2).fill(null) }],
             numforxo : ''
         });
-
-        console.log(this.state.history)
-        
+      
     }
     
     handleClick(i) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-        if (CalculateWinner(squares) || squares[i]) {
+        console.log(squares)
+       
+        if (CalculateWinner(this.state.number,squares) || squares[i]) {
             return;
         }
         squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -71,8 +68,7 @@ class Game extends React.Component {
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = CalculateWinner(current.squares);
-
+        const winner = CalculateWinner(this.state.number,current.squares);
         const moves = history.map((step, move) => {
             const desc = move ?
               'Go to move #' + move :
@@ -96,7 +92,7 @@ class Game extends React.Component {
             <div className="game">
                 <div className="game-board">
                     <div className="form-group">
-                        <label htmlFor="title">Title</label>
+                        <label htmlFor="title">XO Size</label>
                         <input
                             name="numforxo"
                             type="text"
