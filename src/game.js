@@ -36,14 +36,13 @@ class Game extends React.Component {
             history: [{ squares: Array(this.state.numforxo**2).fill(null) }],
             numforxo : ''
         });
-      
+        this.jumpTo(0)
     }
     
     handleClick(i) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-        console.log(squares)
        
         if (CalculateWinner(this.state.number,squares) || squares[i]) {
             return;
